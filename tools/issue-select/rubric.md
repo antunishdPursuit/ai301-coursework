@@ -1,25 +1,5 @@
 # Rubric: is this a good first issue?
 
-## Evidence rules
-
-Use the capture date in an eval bundle as the reference date; use today's
-UTC date in live mode. All day limits below are inclusive. Eval mode uses
-only the supplied bundle and ignores `scope.md`. Live mode uses the sources
-in `references/evidence-guide.md` and applies the house rules in `scope.md`.
-
-Read the issue body, the full available comment thread, assignees, and PR
-links together. A label, an empty sidebar, or a claim count in a separate
-list cannot overrule an explicit current claim or implementation in the
-thread. A later withdrawal or maintainer decision can supersede an earlier
-statement; quote the evidence that resolves the conflict.
-
-For each check, report `pass`, `fail`, or `unclear` and the deciding fact,
-date, or quote. Use `unclear` when the needed evidence is missing or cannot
-be read, not as a substitute for checking it. An explicitly empty list is
-evidence of absence. A failed lookup is not. For an OR condition, one
-verified alternative is enough to pass; missing evidence for an unused
-alternative does not cancel that pass.
-
 ## Checks
 
 | Check | Evidence | Pass condition | Weight |
@@ -35,34 +15,5 @@ alternative does not cancel that pass.
 
 ## Verdict rule
 
-- `accept` only when every `required` check is `pass`.
-- `reject` when any `required` check is `fail` or `unclear`. Name every
-  blocking check and distinguish missing evidence from a confirmed failure.
-- A `preferred` check never changes the verdict. An unclear preferred check
-  gives no ranking benefit and causes no rejection.
-- In live mode, rank only accepted issues. Use the fit profile first, then
-  the number of passed preferred checks as a tie-breaker. If those are tied,
-  keep the input order. Explain the fit without inventing experience,
-  available hours, or an effort estimate.
-- Follow the unchanged `SKILL.md` output contract: all check results, one
-  binary verdict per issue, and a valid fenced JSON block as the last output.
-
-## Why these choices
-
-The 90-day human-activity window avoids treating automated updates as a
-responsive project. The 365-day release alternative allows slower release
-cycles, while the separate maintainer check still requires recent human
-activity. These are initial thresholds to review through evaluation, not a
-claim that every older project is abandoned.
-
-Checking both issue metadata and comments addresses a failure from prior
-PathReview work: the cohort list and GitHub discussion disagreed about who
-was already working on an issue. Current course house rules still take
-precedence in live mode. The 30-day unapproved-claim window can miss someone
-quietly working longer; assignments, open PRs, and maintainer reservations
-remain blocking evidence regardless of age unless the scoped rules apply.
-
-Reproduction detail and beginner labels are preferences because a concise
-issue can still describe a useful, bounded contribution. Personal interest
-can rank accepted issues but cannot rescue an issue that fails a required
-check. No check depends on a particular eval issue ID or its gold label.
+`accept` only if every `required` check is `pass`; otherwise `reject`,
+including any `unclear` required check. `preferred` checks affect ranking only.

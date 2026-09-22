@@ -53,6 +53,25 @@ Execute every check in the table. If `rubric.md` has no checks filled in,
 stop and say so: this skill cannot grade without a rubric, and that is by
 design. The rubric is the part the student writes.
 
+## Evidence rules
+
+Use the capture date in an eval bundle as the reference date; use today's
+UTC date in live mode. All day limits in the rubric are inclusive. The
+mode-specific source limits and house rules above still apply.
+
+Read the issue body, the full available comment thread, assignees, and PR
+links together. A label, an empty sidebar, or a claim count in a separate
+list cannot overrule an explicit current claim or implementation in the
+thread. A later withdrawal or maintainer decision can supersede an earlier
+statement; quote the evidence that resolves the conflict.
+
+For each check, report `pass`, `fail`, or `unclear` and the deciding fact,
+date, or quote. Use `unclear` when the needed evidence is missing or cannot
+be read, not as a substitute for checking it. An explicitly empty list is
+evidence of absence. A failed lookup is not. For an OR condition, one
+verified alternative is enough to pass; missing evidence for an unused
+alternative does not cancel that pass.
+
 ## Workflow
 
 1. In live mode, read `scope.md` and confirm the candidate is inside
@@ -67,15 +86,19 @@ design. The rubric is the part the student writes.
    quote or fact for each grade. `unclear` means the evidence needed is
    genuinely absent, not that you did not look.
 4. Apply the rubric's verdict rule to produce the final verdict:
-   `accept` or `reject`. There is no third verdict. Preferred checks do
-   not feed the verdict; report their grades, and on an accepted issue
-   mention them in the summary as reasons to prefer it over other
-   accepted candidates.
+   `accept` or `reject`. There is no third verdict. Name every blocking
+   check and distinguish missing evidence from a confirmed failure.
+   Preferred checks do not feed the verdict; report their grades, and on
+   an accepted issue mention passed preferences as reasons to prefer it.
+   An unclear preferred check gives no ranking benefit or rejection.
 5. Live mode with several candidates: repeat steps 2-4 per candidate,
    independently (one candidate's evidence never colors another's
    grades). Then rank the accepted candidates using the fit profile in
-   `scope.md` and say what made the top-ranked one fit. Fit orders the
-   accepted list only; it never changes a verdict.
+   `scope.md`, then use the number of passed preferred checks as a
+   tie-breaker. If those are tied, keep the input order. Say what made
+   the top-ranked one fit without inventing experience, available hours,
+   or an effort estimate. Fit orders accepted issues only; it never
+   changes a verdict.
 6. Output the result in the format below.
 
 ## Output format
