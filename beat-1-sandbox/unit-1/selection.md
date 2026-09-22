@@ -6,9 +6,6 @@ Record of the issue carried into Unit 2, and of the evaluation runs that produce
 `eval-run.txt`. This file is graded at the path above; a copy kept anywhere else in
 the repository is not read.
 
-Complete every labelled field below. Each is graded on its own; content placed under the
-wrong label is not graded.
-
 ---
 
 ## Selected issue
@@ -115,50 +112,106 @@ All six required checks pass. One of two preferred checks passes (verification-p
 
 ## Eval iterations
 
-Quote source text directly in each field below. Paraphrase does not satisfy them.
-
 **Run history**
 
-[The agreement score of each run you did, in order. A single run is a complete answer if
-only one run occurred. **The last score in your list must match the agreement line in the
-`eval-run.txt` you committed** — that file is the record of your final run.]
+These are the evaluator's agreement lines, in run order:
+
+1. Initial attempt: `agreement: 0/0 scored items`. Authentication and Windows
+   encoding errors prevented every case from being graded. This was an execution
+   failure, not an accuracy score. An authentication diagnostic also produced no
+   grade. I signed in again, and the retry used UTF-8.
+2. Three-case practice run: `agreement: 3/3 scored items`.
+3. After clarifying the abandoned-PR rule, the targeted `--only issue-03` rerun:
+   `agreement: 1/1 scored items`.
+4. Final full run: `agreement: 18/20 scored items  (bar: 18/20: PASS)`.
+
+The final line matches `eval-run.txt`. The full run used Sonnet and met the
+category floor: claimed 4/4, clear-accept 7/8, dead-repo 3/3, policy 1/1, and
+scope 3/4. The rubric has not changed since that full run.
 
 **Issue analysis**
 
-[One scored issue, identified by id (`issue-01` through `issue-20`; the `calib-`
-issues are not scored). State your rubric's decision, the gold label, and the
-reasoning that produced your rubric's result.]
+For `issue-03`, the final full-run verdict was `reject`, and the instructor's
+label was also `reject`. The deciding required check was `available-to-take`.
+The evaluator recorded:
+
+> PR #10985 is listed as open (an active implementation PR); DanielNoord (COLLABORATOR) on 2026-05-11: 'We are not looking for any other contributions other than @hamza-mobeen's PR.'
+
+An open implementation PR and an explicit maintainer reservation independently
+make this issue unavailable. In the first practice run, the skill also failed
+`bounded-scope` because it treated closed, unmerged PRs as abandoned attempts.
+Those states did not establish why the PRs closed. I approved a clarification
+requiring discussion or maintainer evidence before counting an abandoned
+implementation. In the final full run, `bounded-scope` passed, while the
+availability evidence still correctly produced rejection. The course's shared
+claim exception applies to live PathReview issues, not this evaluation snapshot.
 
 **Check rationale**
 
-[One check from the `rubric.md` uploaded to `tools/issue-select/`, quoted as it is
-currently written, with the reasoning behind its current form.]
+The required `bounded-scope` check is quoted exactly from
+`tools/issue-select/rubric.md`:
+
+| Check | Evidence | Pass condition | Weight |
+|---|---|---|---|
+| bounded-scope | Issue body, acceptance criteria, complete available thread, issue age, and the history of linked closed-unmerged PRs. | The request describes one outcome whose completion can be explained from the text, with no unresolved design decision needed before implementation. Reject an umbrella/tracking issue with separate work items, an unsettled redesign, or a maintainer warning that the fix requires core-internals work. Also reject an issue older than 730 days with at least 2 abandoned implementation PRs unless a later maintainer comment explicitly narrows the task or resolves their blocker. A closed, unmerged PR alone does not prove abandonment. Check its discussion or the maintainer's explanation before counting it as an abandoned implementation. Missing reproduction steps, a missing file estimate, or several checks for one outcome do not alone make scope fail. | required |
+
+I want a contribution with a clear outcome, rather than an umbrella project or
+an unresolved redesign. The age-and-history condition is intended to catch work
+that looks small but has repeatedly stalled. Its thresholds are draft choices,
+not universal rules about old issues. I added the closed-PR clarification because
+closing one proposed solution does not establish that the issue or implementation
+was abandoned. Several steps toward one outcome also do not automatically make
+an issue too broad.
 
 **Trade-offs**
 
-[What the quoted check gives up. Any one of these is a complete answer: an issue whose
-result it changes, a canary you re-ran with `--only`, a case you accept it will miss, or a
-stated reason nothing changed elsewhere. "Nothing changed, and here is how I know" earns
-the point in full when the reason follows.]
+Requiring explicit abandonment evidence can miss a long-running, repeatedly
+attempted issue when the snapshot does not explain why earlier PRs closed. In
+the full run, `issue-15` was accepted although the instructor label was `reject`.
+The evaluator's scope evidence was:
+
+> Single bounded outcome (separate command/text fields); Slack payload example clarifies target format; no unresolved design decision; linked closed PRs #20840 and #23123 cannot be confirmed as abandoned implementations because their discussions are absent from the bundle.
+
+I accept this limitation rather than treating every closed PR as proof of
+abandonment. The snapshot contains only 40 of 97 comments, and evaluation mode
+does not permit fetching the missing history. This full run shows the current
+rule's outcome; I did not run `issue-15` with the earlier rubric, so I cannot
+claim the clarification alone caused this disagreement.
+
+There is also a conservative trade-off: the skill rejected `issue-19`, whose
+instructor label was `accept`, because it treated two potential causes and
+additional suggestions for one UI-freeze problem as unresolved scope. The
+`issue-03` rerun was a targeted check of the clarification, not evidence that
+all other decisions would stay unchanged. The confirming full run measured
+these remaining limits and passed at 18/20.
 
 ---
 
 ## Selection rationale
 
-Graded on whether all three are answered, in your own words. Not on how good the
-reasoning is, and not on length — a short honest answer to each earns the full marks.
-This is also the basis for the claim comment you write in Unit 2.
-
 **Selection rationale**
 
-[Answer all three:
-
-1. The issue's fit to your interests and to the time available.
-2. What the verdict identified correctly, and what you weighed that the rubric could
-   not.
-3. The anticipated difficulty in claiming it.]
+1. **Fit and time.** I chose issue #27 because I want to deepen my work on AI
+   quality, safety, and constructive feedback. My previous PathReview work
+   audited bias in stored reviews; this issue would let me build a check in the
+   generation process itself. The author estimates 5–8 hours. I have not set a
+   weekly time budget yet, so that estimate is not a commitment about my
+   availability. I need to confirm that time before claiming the issue in Unit 2.
+2. **What the rubric captures and what I weighed.** The verdict correctly
+   identifies a focused outcome, recent human repository activity, and no
+   current assignment or implementation PR. Beyond those checks, I weighed the
+   chance to learn how to test constructive tone and handle failed classification
+   or repeated regeneration. A limit on regeneration and behavior after that
+   limit will need to be defined during implementation. An accepted issue does
+   not mean those implementation details are already solved.
+3. **Claiming difficulty.** At the live check, issue #27 had no assignees or
+   comments, and the repository had no PRs. The course also allows classmates
+   to work on the same issue, so another student's claim comment would not by
+   itself block me. I expect little claim competition based on that evidence,
+   but I will recheck the issue in Unit 2. I have not posted a claim or started
+   implementation.
 
 ---
 
-Related paths: `eval-run.txt` in this directory; your skill's files in
+Related paths: `eval-run.txt` in this directory; the skill's files in
 `tools/issue-select/`.
