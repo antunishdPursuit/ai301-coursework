@@ -14,7 +14,7 @@ Two parts. Staff wrote the first; you write the second.
 
 Only issues in the course's Path Review repository are candidates:
 
-- Repo: `<ORG>/<PATH-REVIEW-REPO>` <!-- paste your section's repo from the Unit 1 Check-In page -->
+- Repo: `codepath/pathreview-ai301-fa26-s3`
 
 Do not search, fetch, or grade issues from any other repository, however
 promising. The wider GitHub comes later in the course; for now the field
@@ -36,4 +36,19 @@ you want to avoid. The skill uses this only to RANK the issues your
 rubric accepts, never to change a verdict: fit cannot rescue an issue
 your rubric rejects, and cannot sink one it accepts. -->
 
-(Write a few sentences here.)
+I have used Python, JavaScript/React, Git/GitHub, Docker, and automated tests
+in CodePath projects. In the previous PathReview project, I built an offline
+bias audit over stored reviews, reused the existing detector, and tested the
+audit without changing that detector. I want to deepen my work on AI
+quality, safety, evaluation, and constructive feedback; I am willing to take
+on a challenging accepted issue when its outcome is clear. Prefer a focused
+change that I can explain and verify over unrelated cleanup or a broad
+redesign. My current weekly time budget has not been set, so flag that
+question rather than assume available hours.
+
+## Unit 1 boundary
+
+Evaluate the supplied candidates and report a recommendation only. Selecting
+an issue does not claim it: do not post comments, assign issues, open PRs, or
+change a cohort ledger. The claim step belongs to Unit 2. The fit profile
+ranks accepted issues only and does not change a verdict.
