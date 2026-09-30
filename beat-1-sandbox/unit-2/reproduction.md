@@ -22,45 +22,37 @@ To investigate, I plan to supply a simulated discouraging provider response at t
 
 https://github.com/codepath/pathreview-ai301-fa26-s3/issues/27#issuecomment-5904119559
 
-**Reproduction report**
+`generate_full_review` returned all five sections in both runs with no tone classification, rejection, or regeneration. Static inspection confirms no classification step exists in `generate_section` or `generate_full_review` at this revision.
 
-`generate_full_review` returned all five sections in both runs without any tone classification, rejection, or regeneration. Static inspection confirms no classification step exists in `generate_section` or `generate_full_review` at this revision. That missing step is what this issue requests adding.
+**Environment:** revision `2f4e82f`, Python 3.11.9, Windows-10-10.0.26200-SP0, openai 3.19.2, structlog 26.1.0, controlled replay of existing seed sections with no live model calls.
 
-**Revision**
+**Steps** (run from repo root):
 
-`2f4e82f52efbcfcc57d65b3fa5348672163ca088`
+1. Activate the existing `.venv` and install dependencies:
+   ```powershell
+   .\.venv\Scripts\Activate.ps1
+   pip install -e ".[dev]"
+   ```
+2. Save the script to a location outside the repository. Replace `ABSOLUTE_SCRIPT_PATH` with the full Windows path; quote it so spaces in the path are handled correctly.
+3. Set `PYTHONPATH` and run:
+   ```powershell
+   $env:PYTHONPATH = (Get-Location).Path
+   python -X utf8 -B "ABSOLUTE_SCRIPT_PATH"
+   ```
 
-**Captured environment**
+**Results:**
 
-| Key | Value |
-|---|---|
-| Python | 3.11.9 |
-| Platform | Windows-10-10.0.26200-SP0 |
-| openai | 3.19.2 |
-| structlog | 26.1.0 |
-| Mode | controlled replay of existing seed sections; no live model calls |
+| Case | Seed source | Sections returned | Provider calls | Content + citations preserved | Suggestions preserved |
+|---|---|---|---|---|---|
+| `potentially_discouraging` | `seed_db.py` line 257 | 5 | 5 | `[true, true, true, true, true]` | `[true, true, true, true, true]` |
+| `encouraging_comparison` | `seed_db.py` line 170 | 5 | 5 | `[true, true, true, true, true]` | `[true, true, true, true, true]` |
 
-**Prerequisites**
+**Expected behavior (per issue #27):** A tone classification step should assess each generated section using a prompt. Sections that fail should be rejected and regenerated. A passing section is constructive: actionable, specific, and encouraging. A failing section is discouraging, vague, or dismissive.
 
-A configured project virtual environment at `.venv` (Python 3.11) must exist at the repository root. Activate it and install dependencies:
+**Limitations:** The mock returned the same seed dict for all five calls within each run; identical content across all five sections is an artifact of the test setup. The profile used (`basic_profile.json`) contains `recipe-scaler` and `transit-delay-tracker`, and neither seed subject is derived from that profile. These runs confirm the generator passes content and citations through correctly but do not show how often a live model produces discouraging output with this profile, and they do not prove either seed would fail a classifier if one existed. No application fix was made.
 
-```powershell
-.\.venv\Scripts\Activate.ps1
-pip install -e ".[dev]"
-```
-
-Save the test script to a location outside the repository checkout. `ABSOLUTE_SCRIPT_PATH` is the full Windows path to that file, for example `C:\Users\you\Desktop\repro.py`. Quote it in the command so spaces in the path are handled correctly.
-
-**Environment setup (PowerShell)**
-
-Set `PYTHONPATH` to the repository root before running to match the original execution:
-
-```powershell
-$env:PYTHONPATH = (Get-Location).Path
-python -X utf8 -B "ABSOLUTE_SCRIPT_PATH"
-```
-
-**Script**
+<details>
+<summary>Reproduction script</summary>
 
 ```python
 import ast
@@ -115,49 +107,7 @@ for label, (line, seed) in selected:
     assert client.chat.completions.create.call_count == 5
 ```
 
-**What ran**
-
-`generate_full_review` called `generate_section` five times, once for each section name: `skills_feedback`, `projects_feedback`, `presentation_feedback`, `gaps_feedback`, and `first_impression`. `generate_section` retrieved a prompt template, invoked the provider, and ran `parse_review_output` on the JSON response. `generate_full_review` then added a citation string, appended each result, and consolidated the sections into the returned list. The OpenAI client was replaced with a `MagicMock`; all other production code ran from the installed package. No tone classification, rejection, or regeneration occurred in either run.
-
-The mock returned the same seed dict for all five calls within each run, so all five returned sections carry identical content. This is an artifact of the test setup and does not reflect normal generation behavior. The profile used (`tests/fixtures/sample_profiles/basic_profile.json`) contains repos `recipe-scaler` and `transit-delay-tracker`. Neither seed subject (Career Positioning; Technical Skills) is derived from that profile. These runs check that the generator flow passes content and citations through correctly, not that the content is factually relevant to the supplied profile.
-
-**Extracted output fields -- run 1: `potentially_discouraging`**
-
-| Field | Value |
-|---|---|
-| Seed source | `scripts/seed_db.py` line 257 |
-| Seed `section_name` | `Career Positioning` |
-| Section names returned | `skills_feedback`, `projects_feedback`, `presentation_feedback`, `gaps_feedback`, `first_impression` |
-| `section_count` | `5` |
-| `content_preserved_with_citations` | `[true, true, true, true, true]` |
-| `suggestions_preserved` | `[true, true, true, true, true]` |
-| `provider_call_count` | `5` |
-
-**Extracted output fields -- run 2: `encouraging_comparison`**
-
-| Field | Value |
-|---|---|
-| Seed source | `scripts/seed_db.py` line 170 |
-| Seed `section_name` | `Technical Skills` |
-| Section names returned | `skills_feedback`, `projects_feedback`, `presentation_feedback`, `gaps_feedback`, `first_impression` |
-| `section_count` | `5` |
-| `content_preserved_with_citations` | `[true, true, true, true, true]` |
-| `suggestions_preserved` | `[true, true, true, true, true]` |
-| `provider_call_count` | `5` |
-
-`content_preserved_with_citations` checks that `section.content == json.dumps(seed) + citation`, where `citation` is `"\nSources: recipe-scaler, transit-delay-tracker"`. The returned content field is the seed JSON-encoded and appended with the source list. It is not a byte-for-byte copy of the seed string. `suggestions` are extracted from the parsed response and match the seed list exactly. No additional provider calls were observed beyond five per run. Log output confirmed each `template_retrieved`, `json_output_parsed`, and `section_generated` event in sequence before `full_review_generated`.
-
-**Expected behavior (per issue #27)**
-
-After generation, a tone classification step should assess each section using a prompt. Sections that fail should be rejected and regenerated. A passing section is constructive: actionable, specific, and encouraging. A failing section is negative: discouraging, vague, or dismissive. The issue names two relevant files (`rag/generator/review_generator.py` and `safety/content_filter.py`) but does not specify a required insertion function.
-
-**Actual behavior**
-
-No classification step exists at this revision. `generate_section` passes the parsed response directly to the caller with no intermediate assessment. `safety/content_filter.py` uses regex-based harmful-phrase detection and is not designed for tone classification. The generator currently has no step that evaluates tone before sections are returned or consolidated.
-
-**What this establishes and what it does not**
-
-The runtime test confirms the generator flow: seed content plus citations reaches the caller through `generate_section`, `parse_review_output`, and `generate_full_review`. Combined with static inspection, this confirms no classification step is present at this revision. The test does not show how often a live model produces discouraging content with this profile, and it does not prove that either seed section would fail a classification step if one existed. No application fix was made.
+</details>
 
 ## Eval iterations
 
