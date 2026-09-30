@@ -22,7 +22,20 @@ To investigate, I plan to supply a simulated discouraging provider response at t
 
 https://github.com/codepath/pathreview-ai301-fa26-s3/issues/27#issuecomment-5904119559
 
-`generate_full_review` returned all five sections in both runs with no tone classification, rejection, or regeneration. Static inspection confirms no classification step exists in `generate_section` or `generate_full_review` at this revision.
+*Edited: clarified the baseline test's limits and added the insertion-point finding.*
+
+At revision `2f4e82f`, neither `generate_section` nor `generate_full_review` checks tone. `ContentFilter` uses regex matching for harmful phrases.
+
+A per-section check could go in `generate_full_review` immediately after `generate_section` returns, before citations are added and the section is appended.
+
+The mocked test exercised the generator and parser, but only demonstrated pass-through behavior. It did not validate tone, and its response format differs from the current prompts.
+
+Four prompts request structured JSON; `first_impression` requests prose. `_parse_json_output` appears to treat top-level keys as sections, while `generate_section` keeps the first parsed result. I have not traced this through live generation and the UI. Before adding a tone check, we need to confirm how the model's response becomes feedback text and whether all intended text reaches the check.
+
+Feedback on placement welcome before I draft the proposal.
+
+<details>
+<summary>Baseline test details</summary>
 
 **Environment:** revision `2f4e82f`, Python 3.11.9, Windows-10-10.0.26200-SP0, openai 3.19.2, structlog 26.1.0, controlled replay of existing seed sections with no live model calls.
 
@@ -40,19 +53,9 @@ https://github.com/codepath/pathreview-ai301-fa26-s3/issues/27#issuecomment-5904
    python -X utf8 -B "ABSOLUTE_SCRIPT_PATH"
    ```
 
-**Results:**
-
-| Case | Seed source | Sections returned | Provider calls | Content + citations preserved | Suggestions preserved |
-|---|---|---|---|---|---|
-| `potentially_discouraging` | `seed_db.py` line 257 | 5 | 5 | `[true, true, true, true, true]` | `[true, true, true, true, true]` |
-| `encouraging_comparison` | `seed_db.py` line 170 | 5 | 5 | `[true, true, true, true, true]` | `[true, true, true, true, true]` |
-
-**Expected behavior (per issue #27):** A tone classification step should assess each generated section using a prompt. Sections that fail should be rejected and regenerated. A passing section is constructive: actionable, specific, and encouraging. A failing section is discouraging, vague, or dismissive.
+**Observed baseline:** Each of the two existing seed inputs produced five returned sections and five provider calls. The seed content was preserved with source citations added, and suggestions were preserved. These checks measure pass-through behavior, not tone.
 
 **Limitations:** The mock returned the same seed dict for all five calls within each run; identical content across all five sections is an artifact of the test setup. The profile used (`basic_profile.json`) contains `recipe-scaler` and `transit-delay-tracker`, and neither seed subject is derived from that profile. These runs confirm the generator passes content and citations through correctly but do not show how often a live model produces discouraging output with this profile, and they do not prove either seed would fail a classifier if one existed. No application fix was made.
-
-<details>
-<summary>Reproduction script</summary>
 
 ```python
 import ast
