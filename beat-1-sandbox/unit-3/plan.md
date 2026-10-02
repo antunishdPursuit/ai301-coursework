@@ -1,10 +1,10 @@
 # Plan: constructive feedback tone checks for #27
 
-Status: draft for review. No implementation or live tone validation has been completed.
+Status: approved, posted, and implemented locally on October 2, 2026. Controlled tests passed; live tone-classification accuracy and UI behavior remain unverified.
 
 Issue: https://github.com/codepath/pathreview-ai301-fa26-s3/issues/27
 Baseline revision: `2f4e82f52efbcfcc57d65b3fa5348672163ca088`.
-Planned branch: `fix/27-feedback-tone-check`, following the course skill's house rule.
+Implementation branch: `fix/27-feedback-tone-check`, following the course skill's house rule.
 
 ## Evidence and diagnosis
 
@@ -68,4 +68,6 @@ Before pushing, follow the repository's remaining applicable checks and report a
 
 ## Deviations
 
-Implementation has not started. There are no implementation deviations to report yet. The proposed placement is earlier than the tentative placement in Week 2: before parsing inside `generate_section`, so all generated text is available and direct calls are covered. Update this section after the build with what actually changed.
+The implementation followed the approved Week 3 plan; there were no changes to its behavior or file scope. The four approved files were the only application files committed. The placement is earlier than the tentative Week 2 suggestion, as already stated in the approved plan: before parsing inside `generate_section`.
+
+Local commits: `eedda67` adds the classifier and its tests; `8593fac` integrates checks and bounded regeneration. Validation: 43 focused tests passed; the full unit suite had 418 passed, 53 expected failures, and 3 warnings. Repository-wide Ruff, Black check, and mypy passed, as did the commit hooks. Both original seed replays preserved content, suggestions, and citations under controlled classifier approval, with 10 calls each. No new sample-data files, database changes, live model quality test, Docker repair, or UI verification were performed. The branch has not been pushed.
