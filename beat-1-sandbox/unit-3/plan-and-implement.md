@@ -1,6 +1,6 @@
 # Unit 3: Plan and Build
 
-Status: skill installed and evaluated; implementation plan and comment drafted. Live plan-check returned `accept` on all eight checks before posting and again after the as-built plan update. The initial comment check reported no voice-guide violations. The approved plan comment is posted. Implementation and controlled before/after validation are complete locally; branch push and portal submission remain pending.
+Status: skill installed and evaluated; implementation plan and comment drafted. Live plan-check returned `accept` on all eight checks before posting and again after the as-built plan update. The initial comment check reported no voice-guide violations. The approved plan comment is posted. Implementation and controlled before/after validation are complete; the implementation branch is published and the coursework submission files are complete. Portal submission remains pending.
 
 ## Posted upstream
 
@@ -36,11 +36,13 @@ Tests reuse `basic_profile.json` and prose from the seeded review as controlled 
 
 **Branch**
 
-`fix/27-feedback-tone-check` (local; not pushed yet).
+`fix/27-feedback-tone-check`
+
+[Published branch](https://github.com/antunishdPursuit/pathreview-ai301-fa26-s3/tree/fix/27-feedback-tone-check), verified at `8593facae77e546e180c14a4c64616febe83becf`.
 
 **Evidence**
 
-Local implementation: `eedda67` and `8593fac`, based on `2f4e82f`. No branch push or PR yet.
+Published implementation: `eedda67` and `8593fac`, based on `2f4e82f`. No PR has been opened; that is the Unit 4 step.
 
 Before, at `2f4e82f`, the [Week 2 script and recorded baseline](https://github.com/codepath/pathreview-ai301-fa26-s3/issues/27#issuecomment-5904119559) ran from the PathReview repository root:
 
@@ -150,7 +152,15 @@ The first eight new generator checks failed against the unmodified baseline. Aft
 # Success: no issues found in 77 source files
 ```
 
-The full-suite warnings concern Pydantic configuration deprecation and unawaited AsyncMock coroutines outside the new tests. All existing expected-failure markers remain intact. Commit hooks (Ruff, Black, mypy) also passed. Live-provider/UI verification, remaining pre-push checks, branch publication, and portal submission are still pending.
+The full-suite warnings concern Pydantic configuration deprecation and unawaited AsyncMock coroutines outside the new tests. All existing expected-failure markers remain intact. Commit hooks (Ruff, Black, mypy) also passed. Live-provider/UI verification and portal submission remain unverified. Additional publication checks are recorded below.
+
+**Additional publication checks**
+
+- `npm test -- --run`: 17 passed, 1 timeout, repeated twice. The portfolio-URL character-limit test exceeds its 5-second default locally.
+- `npm test -- --run --testTimeout=15000`: 18 passed (diagnostic timeout override only; no files changed).
+- The frontend tree hash is `bde8c17be37df0d56478b21536b040412775eb73` at both the baseline and implementation commits. This timeout occurs in unchanged frontend code; the default command is not reported as passing.
+- `pytest tests/integration -q --tb=short`: no tests collected, exit 5, explicitly allowed by the repository's CI. No runtime integration coverage is claimed.
+- The implementation branch was pushed to the personal fork and its remote commit verified. Opening a PR and obtaining green remote PR CI remain separate Unit 4 work.
 
 ## Eval iterations
 
