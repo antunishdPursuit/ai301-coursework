@@ -1,12 +1,12 @@
 # Unit 4: Test and Submit
 
-Status: local preparation only. The PR has not been opened, and these Unit 4 files have not been published or submitted to the course portal.
+Status: PR #186 is open and all six GitHub checks passed. Course portal submission remains pending.
 
 ## Your pull request
 
 **Pull request**
 
-Pending Dennis's review and approval. No PR URL exists yet. Target: codepath/pathreview-ai301-fa26-s3, issue #27.
+[PR #186: Add constructive tone checks with bounded regeneration](https://github.com/codepath/pathreview-ai301-fa26-s3/pull/186), addressing issue #27.
 
 **Branch**
 
