@@ -55,10 +55,9 @@ happened; these entries are the toolkit's own timeline.
 All four entries are graded. Keep every heading below, and fill each
 one in the week it belongs to.
 
-**Unit 5: [one line on the tool work]**
+**Unit 5: Refining my AI issue search (October 18, 2026)**
 
-[2-4 sentences: what you built (the scout, your strategy), what broke
-or fell short, what changed because of it.]
+I configured issue-scout with my fit profile and an AI-focused search strategy, keeping my existing rubric and evidence guide. Early results included unrelated issues and status reports, so I tightened the filters and limited results to two per repository. The broad scan's accepted issues were not found on the course list, so I checked that list and used Claude Code to evaluate two candidates from it. The scout accepted themoltnet #552 and rejected agentic-operator-core #86, but a separate setup review estimated 10 to 16 hours for a reduced #552 baseline, so I have not chosen or claimed it.
 
 **Unit 6: [one line on the tool work]**
 
