@@ -1,4 +1,4 @@
-# Contribution: [Issue Title]
+# Contribution: Retrieval evaluation for MoltNet #552
 
 Path: `beat-2-contribution/contribution-story.md`
 
@@ -8,11 +8,10 @@ format criteria grade exactly that. Your course repo link is the whole submissio
 files and no evidence uploads are part of Assignment 5.
 
 **Contribution Number:** [1]
-**Student:** [Student name]
-**GitHub Username:** [your GitHub username, exactly as it appears on your profile - no @, no
-profile URL. Your comments upstream are identified by this name.]
-**Issue:** [GitHub issue link]
-**Pull Request:** [GitHub PR link, once opened]
+**Student:** Dennis
+**GitHub Username:** antunishdPursuit
+**Issue:** https://github.com/getlarge/themoltnet/issues/552
+**Pull Request:** Not opened yet.
 
 One repository, built across units 5 to 8, telling the whole story of your real
 contribution. Fill it as you work, not at the end — the sections below ask for evidence that
@@ -59,11 +58,9 @@ one in the week it belongs to.
 
 I configured issue-scout with my fit profile and an AI-focused search strategy, keeping my existing rubric and evidence guide. Early results included unrelated issues and status reports, so I tightened the filters and limited results to two per repository. The broad scan's accepted issues were not found on the course list, so I checked that list and used Claude Code to evaluate two candidates from it. The scout accepted themoltnet #552 and rejected agentic-operator-core #86, but a separate setup review estimated 10 to 16 hours for a reduced #552 baseline, so I have not chosen or claimed it.
 
-**Unit 6: [one line on the tool work]**
+**Unit 6: Checking my upstream writing and saving repository context (October 18, 2026)**
 
-[2-4 sentences: the voice-guard, the repo-memory file. What broke or
-fell short, and what changed because of it. "Nothing broke" counts when
-it is true - say how you know.]
+I consolidated my voice guide and installed the voice guard plus the external-repository scope updates. Both guard checks passed: the required wiring test stopped a command with no comment text, and the voice check accepted my actual claim draft. On Windows, I used the documented guide-pointer fallback and explicit executable paths, then saved a local repository memory file with the search flow, contribution rules, and verified test commands. The updated scope rubric passed the 20-example regression at 19/20; I kept the logo-toolbar disagreement instead of changing the rubric just to match the label.
 
 **Unit 7: [one line on the tool work]**
 
@@ -79,24 +76,18 @@ drafted, what you did with the draft.]
 
 ## Why I Chose This Issue
 
-[1-2 paragraphs in your own words: how you searched, what your scan
-surfaced, what your scout's verdict said, why this issue fits your
-profile, and what you hope to learn. If your scout's verdict on it
-was reject and you chose it anyway, say so here and say why; choosing
-against your own tool silently is what loses points. Close with an
-honest read of the tool itself: where the scout fell short on a real
-wild search and what you changed or would change, or what convinced
-you it held up. **Record the link to your claim comment in this section too.**
-Not claimed yet? Write `claim pending` and today's date where the link goes,
-and add the link the moment your claim lands.]
+I searched for AI quality, safety, and evaluation work, then checked the course list after the broad scan returned candidates outside it. I chose [themoltnet #552](https://github.com/getlarge/themoltnet/issues/552), which asks for a retrieval evaluation using labeled queries and expected results. In my previous peer review project, I built an offline bias audit over stored reviews and tested it without changing the detector. This issue lets me keep working in AI evaluation and learn how search settings affect relevant and unrelated results. I can spend about 10 hours a week for three weeks, starting with a focused baseline using existing fixtures.
+
+After the scope update, my scout accepted #552 and rated it Ambitious. That verdict did not establish a one-week fit: a separate setup review estimated 10 to 16 hours for the smaller baseline. The scout also treated generic contributor guidance as newcomer support and graded the AI policy before reading all the linked material. I recorded those limits and checked the contribution workflow separately. I proposed the baseline as a first PR, with threshold and query-fanout experiments as follow-ups; that scope still needs maintainer feedback.
+
+**Claim comment:** [My claim on #552](https://github.com/getlarge/themoltnet/issues/552#issuecomment-6256838651).
 
 **Toolkit**
 
-- Tool: issue-scout (your scout: your search strategy, your rubric),
-  and how you used it
-- What it produced: [the scan and its verdict on this issue, described]
-- Difficulties: [where it fell short, or "none met" if none did]
-- What changed: [what you patched or would update, or "nothing"]
+- Tool: issue-scout in Claude Code, using my AI-focused strategy, fit profile, and scope rubric.
+- What it produced: saved candidate evaluations and an accept / Ambitious verdict for #552.
+- Difficulties: the broad scan did not enforce course-list eligibility, and some supporting judgments needed further review.
+- What changed: I checked course eligibility, applied the scope-feasible rubric patch, reran #552, and checked setup separately. The full rubric regression passed 19/20; I preserved the disagreement and the scout's original output.
 
 ---
 
