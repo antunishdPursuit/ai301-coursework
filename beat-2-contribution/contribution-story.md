@@ -8,7 +8,7 @@
 
 **Issue:** [MoltNet #552](https://github.com/getlarge/themoltnet/issues/552)
 
-**Pull Request:** [#2821](https://github.com/getlarge/themoltnet/pull/2821) — draft, awaiting review.
+**Pull Request:** [#2821](https://github.com/getlarge/themoltnet/pull/2821), still open as a draft. Latest verification and maintainer reply: November 2, 2026.
 
 ## Toolkit
 
@@ -26,7 +26,7 @@ I prepared a check manifest and ran the gate on the existing PR branch. Windows 
 
 **Unit 8: Reviewing the monitor's recommendation — October 27, 2026**
 
-I prepared a response playbook and ran the free state check, then authorized a draft-only Claude/Sonnet run. The ten merged PRs sampled were all bot-authored, so their 4.72-hour median was not a useful deadline for my review. The monitor recommended WAIT, which I accepted. My playbook allows consideration of one follow-up no earlier than November 3, after checking for new discussion and any promised timeframe; nothing sends automatically.
+I prepared a response playbook and ran the free state check, then authorized a draft-only Claude/Sonnet run. The ten merged PRs sampled were all bot-authored, so their 4.72-hour median was not a useful deadline for my review. The monitor recommended WAIT, which I accepted. The initial playbook deferred an unsolicited follow-up until November 3. Later maintainer messages gave me concrete work to verify, so I responded to those updates after testing and reviewing each reply. Nothing sends automatically.
 
 ## Why I Chose This Issue
 
@@ -59,7 +59,7 @@ On the 12-entry corpus, relevance-only weights retrieve all labeled relevant ent
 
 **Affected Components**
 
-The additions are in `libs/diary-service/evals/`, its tests and evaluation configuration, and `docs/understand/entry-search.md`. The runner reuses the existing database search and embedding services without changing production retrieval.
+My original PR adds `libs/diary-service/evals/`, its tests and evaluation configuration, and search documentation. The maintainer adapted that baseline into `libs/retrieval-eval` in #2849, with dataset and Potato work in #2927 and #2848. My later work verifies those branches; I did not build their UI or change production retrieval.
 
 **Toolkit**
 
@@ -73,6 +73,8 @@ The additions are in `libs/diary-service/evals/`, its tests and evaluation confi
 **Environment Setup**
 
 Verification used Windows, Node 24.22.1, pnpm 10.34.5 and Go 1.27.1 at `c138ccd906555b9ef8ad72909ee6deaafed2349e`. Prerequisites were locked dependencies, Docker, `pgvector/pgvector:pg16` and cached `Xenova/e5-small-v2` q8 files. The evaluation uses no paid inference API and forbids model downloads. Windows install and command adjustments left tracked configuration and the lockfile unchanged.
+
+The November 2 follow-up used the maintainer's #2848 at `d1c87924`, Node 24.22.1 and pnpm 12.14.0. I ran `pnpm exec nx run @moltnet/retrieval-eval:eval:corpus` with an explicit local model cache and output workspace, then `pnpm exec nx run @moltnet/retrieval-eval:test --skipNxCache`. The corpus run generated fresh embeddings from cached model files and used a new disposable database.
 
 **Steps to Reproduce**
 
@@ -124,12 +126,21 @@ Two observable checks show the contribution's result:
 
 The evaluation ran again with cached model files and a newly created database. A separate missing-model diagnostic failed as expected. Formatting passed on committed LF content; the Windows CRLF checkout produced line-ending warnings.
 
-**Two existing failures remain:**
+**Original baseline failures (October 27; not rerun on November 2):**
 
 - **Windows cache-path assertion:** embedding unit suite, 14 passed and 1 failed. A temporary portable-path diagnostic passed all 15, but that change is not in the PR.
 - **Weather false positive:** real-embedding diary integration, 26 passed and 1 failed. The unrelated weather entry passes the existing vector-distance gate. Neither the failing test nor production search was changed.
 
-At publication the branch was two commits ahead and 137 behind the inspected upstream snapshot. Runtime compatibility with newer main and full hosted CI remain unverified. The one successful Semgrep scan observed later is not a full CI pass.
+At publication, my original branch was two commits ahead and 137 behind the inspected upstream snapshot. Later checks on the maintainer's branches do not establish that my original PR passes against newer main or full hosted CI.
+
+**Follow-up verification, November 1–2:**
+
+- **Real corpus at `d1c87924`:** all 56 searches completed across 276 approved entries, seven queries, four weight settings and two repeats at top ten. Every search returned ten distinct corpus entries, and all 28 repeat pairs matched. GPT-6.1 Sol independently checked the saved results and hashes. There are no relevance judgments yet, so quality metrics remain withheld; the run proves execution and repeatability only.
+- **Full retrieval-evaluation unit suite at `d1c87924`:** 47 passed and 1 failed out of 48. The existing Windows permission assertion expects `0600`, while Node reports `0666`. Its failure prevents the later concurrent-update assertions in that test from running. I left the assertions unchanged.
+- **Local metrics coverage on #2849's `8d83c6e`:** the original 25 tests passed. I added two tests for the open review findings and explicit checks that relative-time datasets omit binary metrics; all 27 then passed. These check existing behavior; they do not fix a demonstrated scoring bug. Commit `3354779d0` remains local and unpublished.
+- **Checks for that local test change:** typechecking and formatting passed; lint had two existing warnings. The Nx secret-scan wrapper failed because of Windows quoting, but the equivalent direct full-project scan and normal commit hooks passed. That wrapper failure was not fixed or rerun during the corpus check.
+
+The [November 2 PR reply](https://github.com/getlarge/themoltnet/pull/2821#issuecomment-6592906034) reports these results and limitations. Raw outputs remain local; generated package-manager metadata was restored, leaving the review checkouts clean.
 
 **Toolkit**
 
@@ -144,14 +155,16 @@ At publication the branch was two commits ahead and 137 behind the inspected ups
 
 **October 23–26, 2026:** The issue discussion described 300 candidate entries and an existing review UI. The maintainer offered initial queries and labels; delivery of the final corpus remained unverified.
 
-**October 27, 2026:** Recovered the checkout, restored dependencies and repeated checks. Corrected wording about the existing UI, opened draft PR #2821 and posted the approved linked reply. Later ran the Unit 7 gate and Unit 8 monitor, recording the blocked precheck and accepted WAIT recommendation.
+**October 27, 2026:** Recovered the checkout, restored dependencies and repeated checks. Opened draft PR #2821 and posted the approved linked reply. Later ran the Unit 7 gate and Unit 8 monitor, recording the blocked precheck and accepted WAIT recommendation.
+
+**October 28–November 2, 2026:** Clarified that I had not accessed the earlier local UI. The maintainer shared the Potato workflow and later published the approved corpus through #2848. I tested the supplied corpus, reran the current unit suite and prepared the separate metrics-coverage tests. After reviewing the wording, I approved the November 2 reply on my existing PR; it was posted through GitHub CLI and verified against the draft.
 
 **Toolkit**
 
 - Tool: Codex, Git recovery and diagnostic runs.
 - What it produced: a restored baseline and verified evidence for the PR.
-- Difficulties: the original checkout was missing after cleanup, and earlier wording overlooked the existing UI.
-- What changed: I verified the recovered commits and corrected the UI wording before publication.
+- Difficulties: the original checkout was missing after cleanup, and descriptions of a local UI did not establish that I could access it.
+- What changed: I verified the recovered commits and clarified tool access and ownership before planning further work.
 
 ## Pull Request
 
@@ -159,14 +172,20 @@ At publication the branch was two commits ahead and 137 behind the inspected ups
 
 **PR Description:** A reproducible fixture retrieval baseline with relevance labels, metric tests and an opt-in runner. It includes results and known failures and covers only the first increment of #552.
 
-**Maintainer Feedback:** The maintainer supported a baseline-first PR and offered initial queries and labels. My [October 27 reply](https://github.com/getlarge/themoltnet/issues/552#issuecomment-6435002639) links the PR and asks what capability is missing from the existing UI and whether additions should be separate work.
+**Maintainer Feedback:** The maintainer adapted my baseline in [#2849](https://github.com/getlarge/themoltnet/pull/2849) and asked me to keep #2821 open. The [November 2 handoff](https://github.com/getlarge/themoltnet/pull/2821#issuecomment-6573726327), posted by the maintainer's LeGreffier bot, shared the corpus through #2848 and invited local retrieval testing while relevance review continues.
 
-**Status:** Open as a draft. As of October 27 at 4:27 p.m. EDT, there were no PR comments, submitted reviews or inline comments, and no new issue reply. I accepted WAIT; no approval or merge is claimed. The Unit 7 block remains recorded above.
+**Status:** As of November 2, #2821 remains an open draft. My [latest reply](https://github.com/getlarge/themoltnet/pull/2821#issuecomment-6592906034) reports the successful corpus run, the remaining Windows failure and the unpublished coverage tests. I asked whether the maintainer prefers a follow-up PR against #2849 or a patch. No approval or merge is claimed.
+
+**Still Pending:**
+
+- The maintainer's response and preferred delivery route for the local metrics tests. Keep #2821 open until its disposition is agreed.
+- Compatible relevance labels, then rescoring the saved rankings. Adding queries, tuning retrieval or building more UI would need a separate scope agreement.
+- Final review of this story, approval to commit and push the coursework update, and Assignment 5 submission. The Unit 7 disclosure-related block remains recorded; later test passes do not clear it.
 
 **Toolkit**
 
 - Tool: Codex/GitHub, ship-gate, the on-demand PR-monitor and a separate native Codex watcher.
-- What it produced: the draft PR, approved issue reply, gate report and private WAIT note.
+- What it produced: the draft PR, reviewed issue and PR replies, gate report and private WAIT note.
 - Difficulties: the PR-monitor omits issue/inline comments and does not include elapsed time in its unchanged-state check.
 - What changed: I checked those discussions separately and require fresh reads and my approval before any later public response.
 
@@ -174,11 +193,11 @@ At publication the branch was two commits ahead and 137 behind the inspected ups
 
 **Technical Skills Gained**
 
-I learned to separate two questions: does the evaluation run correctly, and are the search results useful? Our run was repeatable, but it still returned unrelated entries. Working through precision, recall and the no-match query made that difference clearer.
+I learned to separate a working evaluation from useful search results. The small fixture exposed unrelated results; the larger corpus ran repeatably but still lacks labels. Passing execution checks is not enough to claim better retrieval.
 
 **Challenges Overcome**
 
-The two failing tests needed different explanations: one was a Windows path assertion, while the other exposed a search-quality problem. I kept both visible. The review also caught my assumption that a labeling UI needed to be built when one already existed.
+Windows path and permission assertions needed different explanations from the weather false positive, so I kept those failures separate. I also learned to clarify access to a maintainer's local tool before assuming I could use or extend it. The two new metrics tests addressed specific review gaps without expanding the feature scope.
 
 **What I'd Do Differently Next Time**
 
@@ -189,4 +208,6 @@ I would check the available data, labeling responsibilities and existing tools b
 - [MoltNet #552](https://github.com/getlarge/themoltnet/issues/552): scope, discussion and dataset ownership.
 - [Search documentation at the tested commit](https://github.com/antunishdPursuit/themoltnet/blob/c138ccd906555b9ef8ad72909ee6deaafed2349e/docs/understand/entry-search.md): commands, metrics and limitations.
 - [Contribution guidance at the starting revision](https://github.com/getlarge/themoltnet/blob/cf291d782d6e0f3da1e83274ce6306762b23e1af/CONTRIBUTING.md): repository workflow and checks.
-- [Draft PR #2821](https://github.com/getlarge/themoltnet/pull/2821): implementation and public validation summary.
+- [Draft PR #2821](https://github.com/getlarge/themoltnet/pull/2821): implementation, maintainer handoff and public validation updates.
+- [Approved corpus at the tested commit](https://github.com/getlarge/themoltnet/tree/d1c87924f984cf296d9c7e402e1140e483626896/libs/retrieval-eval/datasets/approved-diary-v1): reproduction instructions and limits while relevance labels are pending.
+- [Maintainer's baseline #2849](https://github.com/getlarge/themoltnet/pull/2849): adapted baseline and metrics-coverage review findings.
