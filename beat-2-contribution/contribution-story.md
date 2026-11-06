@@ -180,7 +180,7 @@ The [November 2 PR reply](https://github.com/getlarge/themoltnet/pull/2821#issue
 
 - The maintainer's response and preferred delivery route for the local metrics tests. Keep #2821 open until its disposition is agreed.
 - Compatible relevance labels, then rescoring the saved rankings. Adding queries, tuning retrieval or building more UI would need a separate scope agreement.
-- Final review of this story, approval to commit and push the coursework update, and Assignment 5 submission. The Unit 7 disclosure-related block remains recorded; later test passes do not clear it.
+- Assignment 5 portal submission remains pending. The Unit 7 disclosure-related block remains recorded; later test passes do not clear it.
 
 **Toolkit**
 
