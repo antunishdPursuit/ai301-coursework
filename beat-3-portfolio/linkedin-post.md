@@ -1,9 +1,13 @@
-I helped adapt issue-scout, an AI-assisted tool for evaluating open-source issues, to reflect the work I wanted to take on. I directed changes so it prioritized my interests and explained difficulty instead of automatically rejecting challenging work.
+I worked on issue-scout in CodePath AI301 to help me find open-source work I actually wanted to do. I changed the AI tool's search preferences and approved a rule change so it would explain challenging work instead of automatically rejecting it.
 
-I wanted to use familiar technologies, including Python and JavaScript, while building on my earlier CodePath project and AI evaluation experience. A difficult issue does not mean we cannot do it. I wanted a second opinion on the challenge, with the final decision still mine.
+I wanted to use Python or JavaScript, but I also wanted to build on my earlier CodePath project and AI evaluation work. I didn't want to limit myself to easy beginner issues just because they looked manageable.
 
-After the scope rule changed, the scout accepted the issue I was considering and labeled it “Ambitious.” Breaking the work into a smaller baseline made me more comfortable: it gave us something realistic to finish while still taking on a challenge.
+The first search results leaned toward general Python beginner tasks. We narrowed the search toward AI evaluation and changed how the scout judged scope. After that change, it accepted the issue I was considering and called it “Ambitious.”
 
-The tool became more aligned with my interests and future career path. It could help assess an opportunity, but we still had to check the scope and contribution rules ourselves.
+I already wanted to work on that issue. What helped was having a second opinion and breaking it into a smaller baseline that felt realistic to finish.
+
+A difficult issue doesn't mean we can't do it. I wanted to understand what I was getting myself into, check the contribution rules, and make the final decision myself.
+
+If you'd like to read more:
 
 https://github.com/antunishdPursuit/ai301-coursework/blob/main/beat-3-portfolio/technical-writeup.md
